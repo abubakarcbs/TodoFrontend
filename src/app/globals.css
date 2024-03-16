@@ -16,15 +16,87 @@
   }
 }
 
+@layer components{
+
+  .text_todo {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 120px; 
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-shadow: 20px; 
+    color: #D5F0C1; 
+    text-decoration: underline;
+  }
+
+  .text_quote{
+    font-family: Arial, Helvetica, sans-serif;
+    color:#F9F7C9;
+    font-size: 30px;
+    margin-left: 20px;
+  }
+.alingcontent {
+  margin-left: 300px;
+   margin-bottom: auto;
+}
+.addtask{
+  font-size: 25px;
+  font-style: italic;
+  color: #034955;
+}
+
+.clock {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 320px;
+}
+h1 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 40px;
+  color: #242323;
+}
+.horizontal-align {
+  display: flex;
+  align-items: center; 
+
+}
+
+.header {
+  text-align: left;
+  font-style: italic;
+  font-size: xx-large;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: #618a70;
+  padding-top:10px;
+  margin-left: 140px;
+}
+.task-text {
+  font-size: 40px;
+  font-weight: 600; 
+  color: #005a5a; 
+}
+
+.engraved-border {
+  border: 2px solid transparent; /* Initially set border to transparent */
+  border-radius: 5px; /* Rounded border */
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+.engraved-border:focus-within {
+  border-color: #EFEFD4; /* Change border color on focus */
+}
+
+
+}
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #80BCBD; 
 }
+
 
 @layer utilities {
   .text-balance {

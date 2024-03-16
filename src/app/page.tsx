@@ -1,56 +1,88 @@
-import { useState } from "react";
+"use client"
+import React, { useState, useEffect } from 'react';
+import Clock from "./clock/clock"
 
-import chalk from "chalk";
+const TodoApp = () => {
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [newTask, setNewTask] = useState<string>('');
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [editValue, setEditValue] = useState<string>('');
 
-
-
-export default function Home() {
-  const [taskList, setTaskList] = useState([]);
-
-  async function addTask() {
-    const answer = await inquirer.prompt([
-      {
-        type: "input",
-        name: "taskName",
-        message: "Enter the task name:",
-      },
-    ]);
-
-    const { taskName } = answer;
-
-    if (taskName.trim() === "") {
-      console.log(chalk.red("Task name cannot be empty."));
-    } else {
-      setTaskList([...taskList, { name: taskName, completed: false }]);
-      console.log(chalk.green("Task added successfully!"));
+  useEffect(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
     }
-  }
+  }, []);
 
-  function listTasks() {
-    if (taskList.length === 0) {
-      console.log(chalk.yellow("No tasks found."));
-    } else {
-      taskList.forEach((task, index) => {
-        const status = task.completed ? chalk.green("*") : chalk.red("O");
-        console.log(`${index + 1}. [${status}] ${task.name}`);
-      });
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = () => {
+    if (newTask.trim() !== '') {
+      setTasks([...tasks, newTask]);
+      setNewTask('');
     }
-  }
+  };
 
-  // Implement other functions (un_markTask, completeTask, deleteTask) similarly
+  const deleteTask = (index: number) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  const updateTask = () => {
+    if (editIndex !== null && editValue.trim() !== '') {
+      const updatedTasks = [...tasks];
+      updatedTasks[editIndex] = editValue;
+      setTasks(updatedTasks);
+      setEditIndex(null);
+      setEditValue('');
+    }
+  };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Tasks:</h1>
-      {taskList.map((task, index) => (
-        <Task key={index} {...task} />
-      ))}
-      <div className="mt-4">
-        <button onClick={addTask} className="px-4 py-2 bg-blue-500 text-white rounded">
-          Add Task
-        </button>
+    <div className="justify-content: between; align-items: center;">
+      <h1 className="text_todo">TaskMaster</h1>
+      <div className='horizontal-align'>
+        <h2 className="text_quote">“Don’t be pushed<br/> around by the<br/> fears in your mind.<br/> Be led by the<br/> dreams in your heart.”</h2>
+        <div className="Clock">
+          <Clock/>
+        </div>
+        <div className="alingcontent">
+        <div className="addtask">
+        <input
+  type="text"
+  value={newTask}
+  onChange={(e) => setNewTask(e.target.value)}
+  placeholder="Enter task"
+  className="engraved-border engraved-placeholder"
+/>
+
+          <button onClick={addTask}>🖋 </button></div>
+          {tasks.map((task, index) => (
+            <div key={index}>
+              {editIndex === index ? (
+                <input
+                  type="text"
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onBlur={updateTask}
+                />
+              ) : (
+                <span className='task-text'>{task}</span>
+              )}
+
+              <div className='addtask'>
+              <button onClick={() => setEditIndex(index)}>🖋Edit</button>
+              <button onClick={() => deleteTask(index)}>  _🗑Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
 
+export default TodoApp;
